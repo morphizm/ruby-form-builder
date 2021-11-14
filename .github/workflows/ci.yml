@@ -1,0 +1,19 @@
+name: ci
+
+on:
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0.2
+        bundler-cache: true
+    - name: Run test
+      run: make test
+    - name: Run linter
+      run: make lint
