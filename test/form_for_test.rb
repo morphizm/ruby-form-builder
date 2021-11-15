@@ -5,23 +5,24 @@ require 'test_helper'
 class FormForTest < Minitest::Test
   User = Struct.new(:name, :job, :gender, keyword_init: true)
 
-  def test_form_for_without_fields
-    user = User.new name: 'rob'
+  def setup
+    @user = User.new name: 'rob', job: 'hexlet', gender: 'm'
+  end
 
-    result = HexletCode.form_for user do |f|
+  def test_form_for_without_fields
+    result = HexletCode.form_for @user do |f|
     end
     expected = "<form action=\"#\" method=\"post\">\n</form>"
     assert_equal expected, result
 
-    result2 = HexletCode.form_for user, url: '/users' do |f|
+    result2 = HexletCode.form_for @user, url: '/users' do |f|
     end
     expected2 = "<form action=\"/users\" method=\"post\">\n</form>"
     assert_equal expected2, result2
   end
 
   def test_with_fields
-    user = User.new name: 'rob', job: 'hexlet', gender: 'm'
-    result = HexletCode.form_for user do |f|
+    result = HexletCode.form_for @user do |f|
       f.input :name
       f.input :job, as: :text
       f.submit
@@ -39,9 +40,8 @@ class FormForTest < Minitest::Test
   end
 
   def test_field_error_on_no_method_instance
-    user = User.new name: 'rob', job: 'hexlet', gender: 'm'
     assert_raises(NoMethodError) do
-      HexletCode.form_for user, url: '/users' do |f|
+      HexletCode.form_for @user, url: '/users' do |f|
         f.input :name
         f.input :job, as: :text
         # user does not have age field
