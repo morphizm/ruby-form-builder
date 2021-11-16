@@ -1,22 +1,17 @@
 # frozen_string_literal: true
 
-require_relative 'hexlet_code/version'
-require_relative 'hexlet_code/tag'
-require_relative 'hexlet_code/form_for'
-
 module HexletCode
   class Error < StandardError; end
 
-  def self.form_for(instance, attributes = {})
-    method = attributes.fetch(:method, 'post')
-    url = attributes.fetch(:url, '#')
+  autoload :FormBuilder, 'hexlet_code/form_builder'
+  autoload :FormTemplate, 'hexlet_code/form_template'
+  autoload :Tag, 'hexlet_code/tag'
+  autoload :Version, 'hexlet_code/version'
+  autoload :Inputs, 'hexlet_code/inputs'
 
-    result = yield HexletCode::FormFor.new(instance)
-    if result
-      body = result.join("\n")
-      "<form action=\"#{url}\" method=\"#{method}\">\n#{body}\n</form>"
-    else
-      "<form action=\"#{url}\" method=\"#{method}\">\n</form>"
-    end
+  def self.form_for(instance, attributes = {})
+    form_builder = HexletCode::FormBuilder.new(instance, attributes)
+    yield form_builder
+    HexletCode::FormTemplate.render(form_builder.result)
   end
 end

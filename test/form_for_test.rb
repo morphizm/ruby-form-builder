@@ -12,12 +12,12 @@ class FormForTest < Minitest::Test
   def test_form_for_without_fields
     result = HexletCode.form_for @user do |f|
     end
-    expected = "<form action=\"#\" method=\"post\">\n</form>"
+    expected = '<form action="#" method="post"></form>'
     assert_equal expected, result
 
     result2 = HexletCode.form_for @user, url: '/users' do |f|
     end
-    expected2 = "<form action=\"/users\" method=\"post\">\n</form>"
+    expected2 = '<form action="/users" method="post"></form>'
     assert_equal expected2, result2
   end
 
@@ -28,13 +28,12 @@ class FormForTest < Minitest::Test
       f.submit
     end
     expected = "\
-<form action=\"#\" method=\"post\">\n\
-<label for=\"name\">Name</label>\n\
-<input name=\"name\" type=\"text\" value=\"rob\">\n\
-<label for=\"job\">Job</label>\n\
-<textarea cols=\"20\" rows=\"40\" name=\"job\">hexlet</textarea>\n\
-<input name=\"commit\" type=\"submit\" value=\"Save\">
-</form>"
+<form action=\"#\" method=\"post\">\
+<label for=\"name\">Name</label>\
+<input name=\"name\" type=\"text\" value=\"rob\">\
+<label for=\"job\">Job</label>\
+<textarea cols=\"20\" rows=\"40\" name=\"job\">hexlet</textarea>\
+<input name=\"commit\" type=\"submit\" value=\"Save\"></form>"
 
     assert_equal expected, result
   end
